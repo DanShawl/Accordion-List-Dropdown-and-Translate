@@ -1,23 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Search = () => {
-  const [term, setTerm] = useState('');
+//  Building the Search Component
+//    1.  Build out a functional component that uses hooks to store the value of the input (the term)
+//    2.  Use useEffect to to send a search query and store it
+//    3.  Store the state of the results from the query using useState
+//          - store the data from the response in the results state
 
+const Search = () => {
+  const [term, setTerm] = useState([]);
   useEffect(() => {
     const search = async () => {
-      await axios.get();
+      const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
+        params: {
+          action: 'query',
+          list: 'search',
+          origin: '*',
+          format: 'json',
+          srsearch: term,
+        },
+      });
+      console.log(data);
     };
   }, [term]);
-
   return (
     <div className="ui container">
       <div className="ui form">
         <div className="field">
-          <label htmlFor="">Enter Search Term</label>
+          <label htmlFor="">Search</label>
           <input
             type="text"
-            className="input"
             value={term}
             onChange={(e) => setTerm(e.target.value)}
           />
@@ -26,6 +38,64 @@ const Search = () => {
     </div>
   );
 };
+
+// const Search = () => {
+//   const [term, setTerm] = useState('');
+//   const [results, setResults] = useState([]);
+//   console.log(results);
+//   useEffect(() => {
+//     const search = async () => {
+//       const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
+//         params: {
+//           action: 'query',
+//           list: 'search',
+//           origin: '*',
+//           format: 'json',
+//           srsearch: term,
+//         },
+//       });
+//       setResults(data.query.search);
+//     };
+//     if (term) {
+//       search();
+//     }
+//   }, [term]);
+
+//   const renderedResults = results.map((result) => {
+//     return (
+//       <div className="item" key={result.pageid}>
+//         <div className="right floated content">
+//           <a
+//             href={`https://en.wikipedia.org?curid=${result.pageid}`}
+//             className="ui button"
+//           >
+//             Go
+//           </a>
+//         </div>
+//         <div className="content">
+//           <div className="header">{result.title}</div>
+//           <span dangerouslySetInnerHTML={{ __html: result.snippet }}></span>
+//         </div>
+//       </div>
+//     );
+//   });
+//   return (
+//     <div className="ui container">
+//       <div className="ui form">
+//         <div className="field">
+//           <label htmlFor="">Enter Search Term</label>
+//           <input
+//             type="text"
+//             className="input"
+//             value={term}
+//             onChange={(e) => setTerm(e.target.value)}
+//           />
+//         </div>
+//       </div>
+//       <div className="ui celled list">{renderedResults}</div>
+//     </div>
+//   );
+// };
 
 export default Search;
 
@@ -62,3 +132,9 @@ export default Search;
 //                 }
 //                 search();
 //             }, [term])
+
+//  Default Search Term: ------------------------------------------------
+//    - avoids errors involving sending empty queries
+//    TWO OPTIONS:
+//      1.  provide a default value
+//      2.  use an if statement to test if term is defined before invoking search()
