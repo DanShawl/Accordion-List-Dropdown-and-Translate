@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+// import { render } from '@testing-library/react';
 import React, { useState } from 'react';
 
 //  Step 1: create accordion component accepting props
@@ -46,3 +46,6 @@ export default Accordion;
 //    'state = {activeIndex: 0}' = 'useState(0)'
 //    'this.state.activeIndex' = 'activeIndex'
 //    'this.setState({ activeIndex: 10 })' = 'setActiveIndex(10)'
+
+//  Throttling API Requests
+//    - waiting a certain amount of time to send the request
