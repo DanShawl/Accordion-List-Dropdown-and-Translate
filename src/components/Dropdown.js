@@ -32,23 +32,39 @@ useEffect(() => {
     {capture: true} 
   )
 }, [])
+
+useEffect(() => {
+  const onBodyClick = (event) => {
+    if(ref.current.contains(event.target)) {
+      return;
+    }
+    setOpen(false)
+  }
+  document.body.addEventListener("click", onBodyClick, {
+    capture: true,
+  })
+})
+
 */
 const Dropdown = ({ options, selected, onSelectedChange }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef();
 
   useEffect(() => {
-    document.body.addEventListener(
-      'click',
-      (event) => {
-        if (ref.current.contains(event.target)) {
-          return;
-        }
-        // console.log(event.target);
-        setOpen(false);
+    const onBodyClick = (event) => {
+      if (ref.current.contains(event.target)) {
+        return;
       }
-      // { capture: true }
-    );
+      // console.log(event.target);
+      setOpen(false);
+    };
+
+    document.body.addEventListener('click', onBodyClick, { capture: true });
+    return () => {
+      document.body.removeEventListener('click', onBodyClick, {
+        capture: true,
+      });
+    };
   }, []);
   const renderedOptions = options.map((option) => {
     // console.log(option.value, selected.value);
@@ -106,3 +122,5 @@ export default Dropdown;
 //    - use event.target with any event handler (make sure its passed in)
 //  How do we figure out if that element was in the dropdown
 //    - useRef
+
+//  We want to use a clean up function inside useEffect to remove the event listener due to the component getting removed (thus all the ref's are set to null)
