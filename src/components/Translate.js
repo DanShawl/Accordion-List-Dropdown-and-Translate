@@ -15,6 +15,18 @@ const options = [
     label: 'Hindi',
     value: 'hi',
   },
+  {
+    label: 'Dutch',
+    value: 'nl',
+  },
+  {
+    label: 'Hebrew',
+    value: 'iw',
+  },
+  {
+    label: 'Spanish',
+    value: 'es',
+  },
 ];
 const Translate = () => {
   const [language, setLanguage] = useState(options[0]);
